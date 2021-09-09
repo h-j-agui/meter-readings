@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+</head>
+<body>
+    <h1>Manage and Add Users</h1>
+    <form action='/login' method='POST'>
+        <div style="padding: 10px" >
+            <label for='name'>Administrator's Name</label>
+            <input type='text' id='name' name='name' required>
+        </div>
+        <div style="padding: 10px" > 
+            <label for='pwd'>Password</label>
+            <input type='password' id='pwd' name='pwd' required>
+            <button type="select">Enter</button>
+        </div>
+        <div style="padding: 10px;">
+       <a href="localhost:8080/admin/addUser" style=" text-decoration: none;margin: 10px; color: black; background-color: rgba(171, 171, 209, 0.308); border-radius: 10px; padding: 8px;">Add Employee</a>
+       <a href="localhost:8080/admin/addAdmin" style=" text-decoration: none; margin: 10px; color: black; background-color: rgba(171, 171, 209, 0.308); border-radius: 10px; padding: 8px;">Add Administrator</a>
+        </div>
+        <!-- <button type="select">Add User</button>
+        <button type="select">Add Administrator</button> -->
+        </form>
+</body>
+</html>
