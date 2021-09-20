@@ -3,7 +3,7 @@ const Admin = require('../models/Admin');
 const adminController = {
     getAdmin(req, res, next) {
         Admin.findAll({
-            name,
+            username,
             password
         } = req.body)
         .then(() => {
@@ -14,12 +14,14 @@ const adminController = {
         })
     },
     addAdmin(req, res, next) {
+        console.log(req.body);
+
         Admin.create({
-            name,
+            username,
             password
         } = req.body) 
-        .then(() => {
-            res.status(201).send()
+        .then((user) => {
+            res.status(201).send(user)
         })
         .catch((err) => {
             console.log(err)
@@ -35,7 +37,7 @@ const adminController = {
                 return res.status(404).send({ error: `There is no admin ${req.params.id}`})
             } else {
                 Admin.update({
-                    name, 
+                    username, 
                     password
                 } = req.body, { where: { id: req.params.id}})
                 .then((admin) => {

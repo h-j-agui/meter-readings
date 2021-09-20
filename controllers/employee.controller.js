@@ -3,7 +3,7 @@ const Employee = require('../models/Employee');
 const employeeController = {
     getEmployee(req, res, next) {
         Employee.findAll({
-            name,
+            username,
             pen
         } = req.body)
         .then(() => {
@@ -15,7 +15,7 @@ const employeeController = {
     },
     addEmployee(req, res, next) {
         Employee.create({
-            name,
+            username,
             pen
         } = req.body)
         .then(() => {
@@ -34,7 +34,7 @@ const employeeController = {
             }
             else {
                 Employee.update({
-                    name,
+                    username,
                     pen
                 } = req.body, { where: {id: req.params.id}})
                 .then((employee) => {

@@ -12,15 +12,19 @@ const meter_entriesController = require('./controllers/meter_entries.controller'
 router.get('/', (req, res) => {
     res.render('index.ejs')
 });
-router.get('/form', (req, res) => {
-    res.render('form.ejs')
-});
+
+
 router.get('/admin', (req, res) => {
     res.render('admin.ejs')
 });
 
+router.get('/form', (req, res) => {
+    res.render('form.ejs')
+});
+
 //administrator login
 router.get('/admin', adminController.getAdmin);
+
 
 //adding, editing and deleting administrators and employees
 router.post('/admin/addUser', employeeController.addEmployee);

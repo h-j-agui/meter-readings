@@ -4,7 +4,7 @@ const db = require('./db');
 class Employee extends Model {}
 
 Employee.init({
-    name: {
+    username: {
         type: DataTypes.STRING
     },
     pen: {

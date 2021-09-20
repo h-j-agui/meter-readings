@@ -4,11 +4,14 @@ const db = require('./db');
 class Admin extends Model {}
 
 Admin.init({
-    name: {
+    username: {
         type: DataTypes.STRING
     },
     password: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
+    },
+    salt: {
+        type: DataTypes.STRING
     }
 
 }, {
