@@ -1,33 +1,61 @@
-const Admin = require('./controllers/admin.controller');
+const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
-function usePassport(passport, getUserName) {
+const Admin = require('./models/Admin');
 
 
-    const authenticateUser = async (username, password, done) => {
+// Authentication strategies
+// Application middleware
+// Sessions (optional)
 
-
-        const user = Admin.findOneAdmin({username});
-
-        if (user == null) {
-            return done(null, false, { message: 'No user with that name'})
-        }
-
-        try {
-            if(await bcrypt.compare(password, user.password)) {
-                return done(null, user)
-            } else {
-                return done(null, false, { message: 'Incorrect Password'})
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        Admin.findOne({ where: { username: username }})
+        .then((user) => {
+            if(!user) {
+                return done(null, false, { message: 'User not found.' });
             }
-        } catch (err) {
-            return done(err)
-        }
+            if(user.password !== password) {
+                return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        
     }
-    passport.use(new LocalStrategy({ usernameField: 'username'}, authenticateUser))
-    passport.serializeUser((user, done) => done(null, user.id))
-    passport.serializeUser((id, done) => { 
-        done(null, user.id)
+));
+// passport.use(new LocalStrategy(
+//     function(username, password, done) {
+//         Admin.findOne({ where: { username: username }})
+//         .then((user) => {
+//             if(!user) {
+//                 return done(null, false, { message: 'User not found.' });
+//             }
+//             if(user.password !== password) {
+//                 return done(null, false, { message: 'Incorrect password.' });
+//             }
+//             return done(null, user);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         })
+        
+//     }
+// ));
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+  
+passport.deserializeUser(function(id, done) {
+    Admin.findByPk(id)
+    .then((user) => {
+        done(null, user)
     })
-}
-module.exports =  usePassport;
+    .catch(err => console.log(err))
+  });
+
+  module.exports = passport;

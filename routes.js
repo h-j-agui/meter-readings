@@ -1,5 +1,15 @@
 const express = require('express');
+const { redirect } = require('express/lib/response');
 const router = express.Router();
+const passport = require('passport');
+
+const checkAuth = (req, res, next) => {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+
+    res.redirect('/');
+}
 
 
 const adminController = require('./controllers/admin.controller');
@@ -8,17 +18,32 @@ const meterController = require('./controllers/meter.controller');
 const meter_entriesController = require('./controllers/meter_entries.controller');
 
 
-
+//User must see this to enter PIN
 router.get('/', (req, res) => {
     res.render('index.ejs')
 });
 
 
-router.get('/admin', (req, res) => {
+//Admin must see this to enter user & pass
+router.get('/admin',  (req, res) => {
     res.render('admin.ejs')
 });
 
-router.get('/form', (req, res) => {
+router.post('/admin', passport.authenticate('local'), (req, res) => {
+    // res.send(req.user)
+    res.redirect('/admin/adminDash')
+})
+
+router.post('/logout', (req, res) => {
+    req.logOut();
+    console.log('logging out')
+    res.sendStatus(200);
+
+})
+
+
+
+router.get('/form', checkAuth, (req, res) => {
     res.render('form.ejs')
 });
 
