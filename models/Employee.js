@@ -7,8 +7,11 @@ Employee.init({
     username: {
         type: DataTypes.STRING
     },
-    pen: {
-        type: DataTypes.INTEGER
+    password: {
+        type: DataTypes.INTEGER,
+        validate: {
+            len: [4, 4]
+        }
     }
 
 }, {
@@ -17,3 +20,4 @@ Employee.init({
 });
 
 module.exports = Employee;
+

@@ -3,13 +3,32 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
 const Admin = require('./models/Admin');
+const Employee = require('./models/Employee');
 
 
 // Authentication strategies
 // Application middleware
 // Sessions (optional)
 
-passport.use(new LocalStrategy(
+
+passport.use('employee-local', new LocalStrategy(
+    function(username, password, done) {
+        Employee.findOne({ where: { password: password}})
+        .then((user) => {
+            console.log('lalala')
+            if(!user) {
+                return done(null, false, { message: 'Access Denied!' });
+            }
+            return done(null, user);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        
+    }
+));
+
+passport.use('admin-local', new LocalStrategy(
     function(username, password, done) {
         Admin.findOne({ where: { username: username }})
         .then((user) => {
@@ -27,26 +46,11 @@ passport.use(new LocalStrategy(
         
     }
 ));
-// passport.use(new LocalStrategy(
-//     function(username, password, done) {
-//         Admin.findOne({ where: { username: username }})
-//         .then((user) => {
-//             if(!user) {
-//                 return done(null, false, { message: 'User not found.' });
-//             }
-//             if(user.password !== password) {
-//                 return done(null, false, { message: 'Incorrect password.' });
-//             }
-//             return done(null, user);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         })
-        
-//     }
-// ));
+
+
 
 passport.serializeUser(function(user, done) {
+
     done(null, user.id);
   });
   

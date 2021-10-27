@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 const db = require('./db');
 
-class Meter_entries extends Model {}
+class Reading extends Model {}
 
-Meter_entries.init({
+Reading.init({
     date: {
         type: DataTypes.DATEONLY
     },
@@ -19,4 +19,4 @@ Meter_entries.init({
     modelName: 'meter_entries'
 });
 
-module.exports = Meter_entries;
+module.exports = Reading;

@@ -2,12 +2,12 @@ const db = require('./db');
 const Admin = require('./Admin');
 const Employee = require('./Employee');
 const Meter = require('./Meter');
-const Meter_enteries = require('./Meter_entries');
+const Reading = require('./Reading');
 
 
 
-Meter_enteries.belongsTo(Meter, { foreignKey: 'meter_id'});
-Meter_enteries.belongsTo(Employee, { foreignKey: 'employee_name'});
+Reading.belongsTo(Meter, { foreignKey: 'meter_id'});
+Reading.belongsTo(Employee, { foreignKey: 'employee_name'});
 
 
 module.exports = {
@@ -15,5 +15,5 @@ module.exports = {
     Admin,
     Employee,
     Meter,
-    Meter_enteries
+    Reading
 }

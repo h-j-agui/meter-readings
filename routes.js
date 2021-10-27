@@ -1,83 +1,80 @@
-const express = require('express');
-const { redirect } = require('express/lib/response');
+const express = require("express");
+const { redirect } = require("express/lib/response");
 const router = express.Router();
-const passport = require('passport');
+const passport = require("passport");
 
 const checkAuth = (req, res, next) => {
-    if(req.isAuthenticated()) {
-        return next();
-    }
+  if (req.isAuthenticated()) {
+    return next();
+  }
 
-    res.redirect('/');
-}
+  res.redirect("/");
+};
 
-
-const adminController = require('./controllers/admin.controller');
-const employeeController = require('./controllers/employee.controller');
-const meterController = require('./controllers/meter.controller');
-const meter_entriesController = require('./controllers/meter_entries.controller');
-
+const adminController = require("./controllers/admin.controller");
+const employeeController = require("./controllers/employee.controller");
+const meterController = require("./controllers/meter.controller");
+const readingController = require("./controllers/reading.controller");
 
 //User must see this to enter PIN
-router.get('/', (req, res) => {
-    res.render('index.ejs')
+router.get("/", (req, res) => {
+  res.render("index.ejs");
 });
-
 
 //Admin must see this to enter user & pass
-router.get('/admin',  (req, res) => {
-    res.render('admin.ejs')
+router.get("/admin", (req, res) => {
+  res.render("admin.ejs");
 });
 
-router.post('/admin', passport.authenticate('local'), (req, res) => {
-    // res.send(req.user)
-    res.redirect('/admin/adminDash')
-})
+router.post("/admin", passport.authenticate("admin-local"), (req, res) => {
+  // res.send(req.user)
+  res.redirect("/admin/adminDash");
+});
 
-router.post('/logout', (req, res) => {
-    req.logOut();
-    console.log('logging out')
-    res.sendStatus(200);
+router.post("/logout", (req, res) => {
+  req.logOut();
+  console.log("logging out");
+  res.sendStatus(200);
+});
 
-})
-
-
-
-router.get('/form', checkAuth, (req, res) => {
-    res.render('form.ejs')
+router.get("/form", checkAuth, (req, res) => {
+  res.render("form.ejs");
 });
 
 //administrator login
-router.get('/admin', adminController.getAdmin);
-
+router.get("/admin", adminController.getAdmin);
 
 //adding, editing and deleting administrators and employees
-router.post('/admin/addUser', employeeController.addEmployee);
-router.post('/admin/addAdmin', adminController.addAdmin);
+router.post("/admin/addUser", employeeController.addEmployee);
+router.post("/admin/addAdmin", adminController.addAdmin);
 
-router.put('/admin/addUser', employeeController.editEmployee);
-router.put('/admin/addAdmin', adminController.editAdmin);
+router.put("/admin/editUser/:id", employeeController.editEmployee);
+router.put("/admin/editAdmin", adminController.editAdmin);
 
-router.delete('/admin/addUser', employeeController.deleteEmployee);
-router.delete('/admin/addAdmin', adminController.deleteAdmin);
+router.delete("/admin/deleteEmployee/:id", employeeController.deleteEmployee);
+router.delete("/admin/deleteAdmin/:id", adminController.deleteAdmin);
 
 //employee login
-router.get('/', employeeController.getEmployee);
+router.post("/login", passport.authenticate("employee-local"), (req, res) => {
+  res.redirect("/form");
+});
+
+router.get("/getEmployees", employeeController.getEmployee);
 
 //Meter
-router.get('/form/index', meterController.getMeter);
-router.post('/form/index', meterController.addMeter);
+router.get("/admin/addLocation", meterController.getMeter);
+router.post("/admin/addLocation", meterController.addMeter);
 
 //edit and delete with admin access
-router.put('/admin/meter', meterController.editMeter);
-router.delete('/admin/meter', meterController.deleteMeter);
+router.put("/admin/meter", meterController.editMeter);
+router.delete("/admin/meter/:id", meterController.deleteMeter);
 
 //Meter-entries
-router.get('/form', meter_entriesController.getMeter_entries);
-router.post('/form', meter_entriesController.addMeter_entries);
+router.get("/form", readingController.getReading);
+router.post("/form", readingController.addReading);
 
 //edit and delete with admin access
-router.put('/admin/Meter_entries', meter_entriesController.editMeter_entries);
-router.delete('/admin/Meter_entries', meter_entriesController.deleteMeter_entries);
+router.put("/admin/Reading", readingController.editReading);
+router.delete("/admin/Reading/:id", readingController.deleteReading);
 
 module.exports = router;

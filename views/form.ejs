@@ -13,12 +13,14 @@
             
             <form action="/meterLocation" method='POST'>
                 <label for="text">Location</label>
+                <select name="location" id="location">
+                    <option value="Sabin">Sabin</option>
+                    <option value="Sarmiento">Sarmiento</option>
+                    <option value="Las Heras">Las Heras</option>
+                </select>
             </form>
         </div>
-        <div>
-            <label for='date'>Date</label>
-            <input type='date' id='date' name='date' required>
-        </div>
+        
         <div>
             <label for='number'>Meter Reading</label>
             <input type='number' id='number' name='number' required>
@@ -30,5 +32,11 @@
         </div>
         <button type="submit">Add</button>
         </form>
+      
+            <form action='/logout' method='POST'>
+                <button type='submit'  >Logout</button> 
+            </form>
+           
+    
 </body>
 </html>
