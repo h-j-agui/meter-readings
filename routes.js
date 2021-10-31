@@ -62,16 +62,19 @@ router.post("/login", passport.authenticate("employee-local"), (req, res) => {
 router.get("/getEmployees", employeeController.getEmployee);
 
 //Meter
-router.get("/admin/addLocation", meterController.getMeter);
-router.post("/admin/addLocation", meterController.addMeter);
+router.get("/admin/getMeters", meterController.getMeter);
+router.post("/admin/addMeter", meterController.addMeter);
 
 //edit and delete with admin access
 router.put("/admin/meter", meterController.editMeter);
 router.delete("/admin/meter/:id", meterController.deleteMeter);
 
 //Meter-entries
-router.get("/form", readingController.getReading);
-router.post("/form", readingController.addReading);
+router.get("/getMeterData", readingController.getReading);
+router.post("/editMeterData", readingController.addReading);
+router.get("/getLastReadings", readingController.getLastReadings);
+
+//why its called edit meter data? if the route is to 'add' not to edit.
 
 //edit and delete with admin access
 router.put("/admin/Reading", readingController.editReading);
