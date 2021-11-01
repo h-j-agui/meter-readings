@@ -20,7 +20,23 @@ const readingController = {
       "SELECT * FROM readings a WHERE a.reading = (SELECT MAX(b.reading) FROM readings b WHERE b.meter_id = a.meter_id )"
     ).then(([results, metadata]) => {
       // Results will be an empty array and metadata will contain the number of affected rows.
-      res.status(201).send(metadata);
+      res
+        .status(201)
+        .send(metadata)
+        .catch((err) => console.log(err));
+    });
+  },
+  getConsumption(req, res, next) {
+    db.query(
+      // 'select a.meter_id, a.reading, c.reading, (c.reading - a.reading) as diff, a."createdAt", c."createdAt", DATE_PART(\'day\',c."createdAt" - a."createdAt") as difdat, ((c.reading - a.reading) / DATE_PART(\'day\',c."createdAt" - a."createdAt")) as consDay, DATE_PART(\'day\',current_date - a."createdAt") as x, DATE_PART(\'day\',current_date - a."createdAt") * ((c.reading - a.reading) / DATE_PART(\'day\',c."createdAt" - a."createdAt")) + (a.reading) as estimated from readings a, readings c where a.meter_id = c.meter_id and a.reading = (select min(x1.reading) from readings x1 where x1.meter_id = a.meter_id ) and c.reading = (select max(x2.reading) from readings x2 where x2.meter_id = c.meter_id )'
+      'select m.location, a.reading, c.reading, c.reading - a.reading as diff, a."createdAt", c."createdAt", DATE_PART(\'day\',c."createdAt" - a."createdAt") as difdat, ((c.reading - a.reading) / DATE_PART(\'day\',c."createdAt" - a."createdAt")) as consDay, DATE_PART(\'day\',current_date - a."createdAt") as x, DATE_PART(\'day\',current_date - a."createdAt") * ((c.reading - a.reading) / DATE_PART(\'day\',c."createdAt" - a."createdAt")) + (a.reading) as estimated from meters m, readings a, readings c where m.id = a.meter_id and a.meter_id= c.meter_id and a.reading = (select min(x1.reading) from readings x1 where x1.meter_id = a.meter_id ) and c.reading = (select max(x2.reading) from readings x2 where x2.meter_id = c.meter_id )'
+    ).then(([results, metadata]) => {
+      res
+        .status(201)
+        .send(metadata)
+        .catch((err) => {
+          console.log(err);
+        });
     });
   },
   addReading(req, res, next) {

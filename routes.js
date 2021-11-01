@@ -31,10 +31,11 @@ router.post("/admin", passport.authenticate("admin-local"), (req, res) => {
   res.redirect("/admin/adminDash");
 });
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   req.logOut();
   console.log("logging out");
   res.sendStatus(200);
+  res.redirect("/");
 });
 
 router.get("/form", checkAuth, (req, res) => {
@@ -73,6 +74,7 @@ router.delete("/admin/meter/:id", meterController.deleteMeter);
 router.get("/getMeterData", readingController.getReading);
 router.post("/editMeterData", readingController.addReading);
 router.get("/getLastReadings", readingController.getLastReadings);
+router.get("/getConsumptions", readingController.getConsumption);
 
 //why its called edit meter data? if the route is to 'add' not to edit.
 
