@@ -4,6 +4,11 @@ const router = express.Router();
 const passport = require("passport");
 
 const checkAuth = (req, res, next) => {
+  console.log("req.user", req.user);
+  console.log(
+    "ESTA PARTE MUESTRA EL VALOR DE: req.isAuthenticated ",
+    req.isAuthenticated()
+  );
   if (req.isAuthenticated()) {
     return next();
   }
@@ -21,6 +26,30 @@ router.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
+//employee login
+router.post("/login", passport.authenticate("employee-local"), (req, res) => {
+  console.log("logging..........");
+  // res.redirect("/admin/adminDash");
+  res.send(req.user);
+  // res.redirect("/form");
+});
+
+router.get("/checkAuth", (req, res, next) => {
+  console.log("/checkAuth", req.user);
+
+  console.log(req.isAuthenticated());
+
+  // if (req.isAuthenticated()) {
+  //   next();
+  // }
+
+  if (req.isAuthenticated()) {
+    res.status(200).send(req.user);
+  } else {
+    res.send({ message: "Not Authorized" });
+  }
+});
+
 //Admin must see this to enter user & pass
 router.get("/admin", (req, res) => {
   res.render("admin.ejs");
@@ -31,11 +60,11 @@ router.post("/admin", passport.authenticate("admin-local"), (req, res) => {
   res.redirect("/admin/adminDash");
 });
 
-router.get("/logout", (req, res) => {
-  req.logOut();
-  console.log("logging out");
-  res.sendStatus(200);
-  res.redirect("/");
+router.post("/logout", (req, res) => {
+  res.send(req.logOut());
+
+  // console.log("logging out");
+  // console.log(req.user);
 });
 
 router.get("/form", checkAuth, (req, res) => {
@@ -54,11 +83,6 @@ router.put("/admin/editAdmin", adminController.editAdmin);
 
 router.delete("/admin/deleteEmployee/:id", employeeController.deleteEmployee);
 router.delete("/admin/deleteAdmin/:id", adminController.deleteAdmin);
-
-//employee login
-router.post("/login", passport.authenticate("employee-local"), (req, res) => {
-  res.redirect("/form");
-});
 
 router.get("/getEmployees", employeeController.getEmployee);
 

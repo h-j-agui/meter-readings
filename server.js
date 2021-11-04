@@ -1,9 +1,15 @@
 const express = require("express");
 
-const router = require("./routes");
-const admin = require("./adminRoutes");
+const homeRoutes = require("./routes");
+const adminRoutes = require("./adminRoutes");
 const models = require("./models/index");
 const cors = require("cors");
+
+var corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  credentials: true,
+};
 
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -12,8 +18,10 @@ const passport = require("./passport-config");
 const app = express();
 
 app.set("view-engine", "ejs");
-
+app.use(cors(corsOptions));
 const checkAuth = (req, res, next) => {
+  console.log("req.user", req.user);
+
   if (req.isAuthenticated()) {
     return next();
   }
@@ -32,9 +40,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Routes
-app.use(cors());
-app.use("/", router);
-app.use("/admin", checkAuth, admin); //checkAuth
+
+app.use("/", homeRoutes);
+app.use("/admin", checkAuth, adminRoutes); //checkAuth
 
 const port = 8080;
 

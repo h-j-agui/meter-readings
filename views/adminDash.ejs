@@ -1,25 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Accounts and Users</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Admin Home</h1>
-    
-    <div style="padding: 10px;">
-        <a href="http://localhost:8080/admin/addUser" style=" text-decoration: none;margin: 10px; color: black; background-color: rgba(171, 171, 209, 0.308); border-radius: 10px; padding: 8px;">Add Employee</a>
-        <a href="http://localhost:8080/admin/addAdmin" style=" text-decoration: none; margin: 10px; color: black; background-color: rgba(171, 171, 209, 0.308); border-radius: 10px; padding: 8px;">Add Administrator</a>
-        <a href="http://localhost:8080/admin/addLocation" style=" text-decoration: none; margin: 10px; color: black; background-color: rgba(171, 171, 209, 0.308); border-radius: 10px; padding: 8px;">Add Meter</a>
-       
-    </div>
-    <div style='margin: 15px 10px;'>
-        <form action='/logout' method='POST'>
-            <a href="http://localhost:8080/admin" style=" text-decoration: none; margin: 10px; color: black; background-color: rgba(171, 171, 209, 0.308); border-radius: 10px; padding: 8px;"> <button type='submit' style='border:none;' >Logout</button> </a>
-          </form>
-        </div>
 
-</body>
+    <div style="padding: 10px">
+      <a
+        href="http://localhost:8080/admin/addUser"
+        style="
+          text-decoration: none;
+          margin: 10px;
+          color: black;
+          background-color: rgba(171, 171, 209, 0.308);
+          border-radius: 10px;
+          padding: 8px;
+        "
+        >Add Employee</a
+      >
+      <a
+        href="http://localhost:8080/admin/addAdmin"
+        style="
+          text-decoration: none;
+          margin: 10px;
+          color: black;
+          background-color: rgba(171, 171, 209, 0.308);
+          border-radius: 10px;
+          padding: 8px;
+        "
+        >Add Administrator</a
+      >
+      <a
+        href="http://localhost:8080/admin/addLocation"
+        style="
+          text-decoration: none;
+          margin: 10px;
+          color: black;
+          background-color: rgba(171, 171, 209, 0.308);
+          border-radius: 10px;
+          padding: 8px;
+        "
+        >Add Meter</a
+      >
+    </div>
+    <div style="margin: 15px 10px">
+      <form action="/logout" method="GET">
+        <a
+          href="http://localhost:8080/admin"
+          style="
+            text-decoration: none;
+            margin: 10px;
+            color: black;
+            background-color: rgba(171, 171, 209, 0.308);
+            border-radius: 10px;
+            padding: 8px;
+          "
+        >
+          <button type="submit" style="border: none">Logout</button>
+        </a>
+      </form>
+    </div>
+  </body>
 </html>
