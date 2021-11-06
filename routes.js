@@ -35,8 +35,6 @@ router.post("/login", passport.authenticate("employee-local"), (req, res) => {
 });
 
 router.get("/checkAuth", (req, res, next) => {
-  console.log("/checkAuth", req.user);
-
   console.log(req.isAuthenticated());
 
   // if (req.isAuthenticated()) {
@@ -60,11 +58,11 @@ router.post("/admin", passport.authenticate("admin-local"), (req, res) => {
   res.redirect("/admin/adminDash");
 });
 
-router.post("/logout", (req, res) => {
-  res.send(req.logOut());
+router.get("/logout", function (req, res) {
+  req.logout();
 
-  // console.log("logging out");
-  // console.log(req.user);
+  req.user = null;
+  res.redirect("/");
 });
 
 router.get("/form", checkAuth, (req, res) => {
