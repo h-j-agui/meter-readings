@@ -5,6 +5,7 @@ const Meter = require("./Meter");
 const Reading = require("./Reading");
 
 Reading.belongsTo(Meter, { foreignKey: "meter_id" });
+Reading.belongsTo(Employee, { foreignKey: "employee_id" });
 
 module.exports = {
   db,

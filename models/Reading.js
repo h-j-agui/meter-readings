@@ -14,7 +14,7 @@ Reading.init(
     notes: {
       type: DataTypes.TEXT,
     },
-    user_id: {
+    employee_id: {
       type: DataTypes.INTEGER,
     },
   },
