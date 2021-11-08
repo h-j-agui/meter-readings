@@ -29,24 +29,24 @@ passport.use(
   })
 );
 
-// passport.use(
-//   "admin-local",
-//   new LocalStrategy(function (username, password, done) {
-//     Admin.findOne({ where: { username: username } })
-//       .then((user) => {
-//         if (!user) {
-//           return done(null, false, { message: "User not found." });
-//         }
-//         if (user.password !== password) {
-//           return done(null, false, { message: "Incorrect password." });
-//         }
-//         return done(null, user);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   })
-// );
+passport.use(
+  "admin-local",
+  new LocalStrategy(function (username, password, done) {
+    Admin.findOne({ where: { username: username } })
+      .then((user) => {
+        if (!user) {
+          return done(null, false, { message: "User not found." });
+        }
+        if (user.password !== password) {
+          return done(null, false, { message: "Incorrect password." });
+        }
+        return done(null, user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  })
+);
 
 passport.serializeUser(function (user, done) {
   console.log("serializando", user);

@@ -53,9 +53,9 @@ router.get("/admin", (req, res) => {
   res.render("admin.ejs");
 });
 
-router.post("/admin", passport.authenticate("admin-local"), (req, res) => {
-  // res.send(req.user)
-  res.redirect("/admin/adminDash");
+router.post("/adminLogin", passport.authenticate("admin-local"), (req, res) => {
+  res.send(req.user);
+  // res.redirect("/admin/adminDash");
 });
 
 router.get("/logout", function (req, res) {
