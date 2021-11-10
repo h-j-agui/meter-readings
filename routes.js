@@ -4,16 +4,11 @@ const router = express.Router();
 const passport = require("passport");
 
 const checkAuth = (req, res, next) => {
-  console.log("req.user", req.user);
-  console.log(
-    "ESTA PARTE MUESTRA EL VALOR DE: req.isAuthenticated ",
-    req.isAuthenticated()
-  );
   if (req.isAuthenticated()) {
     return next();
+  } else {
+    res.redirect("/admin");
   }
-
-  res.redirect("/");
 };
 
 const adminController = require("./controllers/admin.controller");
@@ -44,7 +39,8 @@ router.get("/checkAuth", (req, res, next) => {
   if (req.isAuthenticated()) {
     res.status(200).send(req.user);
   } else {
-    res.send({ message: "Not Authorized" });
+    res.status(401).send({ message: "Not Authorized" });
+    // res.send({ message: "Not Authorized" });
   }
 });
 
@@ -65,9 +61,9 @@ router.get("/logout", function (req, res) {
   res.redirect("/");
 });
 
-router.get("/form", checkAuth, (req, res) => {
-  res.render("form.ejs");
-});
+// router.get("/form", checkAuth, (req, res) => {
+//   res.render("form.ejs");
+// });
 
 //administrator login
 router.get("/admin", adminController.getAdmin);
