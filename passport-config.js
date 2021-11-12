@@ -2,8 +2,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 
-const Admin = require("./models/Admin");
-const Employee = require("./models/Employee");
+const User = require("./models/User");
 
 // Authentication strategies
 // Application middleware
@@ -12,7 +11,7 @@ const Employee = require("./models/Employee");
 passport.use(
   "employee-local",
   new LocalStrategy(function (username, password, done) {
-    Employee.findOne({ where: { password: password } })
+    User.findOne({ where: { password: password } })
       .then((user) => {
         // console.log("Encontre un usuario", user);
 
@@ -20,9 +19,10 @@ passport.use(
           return done(null, false, { message: "Access Denied!" });
         }
 
-        // console.log("approved", user);
+        console.log("attempting admin login", user);
         return done(null, user);
       })
+
       .catch((err) => {
         console.log(err);
       });
@@ -30,18 +30,27 @@ passport.use(
 );
 
 passport.use(
-  "admin-local",
+  "admin-local", //hannah,    12345
   new LocalStrategy(function (username, password, done) {
-    Admin.findOne({ where: { username: username } })
+    //hannah
+    User.findOne({ where: { username: username } })
+
+      //theuser from the db. {id:1, username: hannah, password:ha$3d}
       .then((user) => {
         if (!user) {
           return done(null, false, { message: "User not found." });
         }
-        if (user.password !== password) {
-          return done(null, false, { message: "Incorrect password." });
-        }
-        return done(null, user);
+        //12345   +  3($#*(#))       ha$3d
+        bcrypt.hash(password, user.salt).then((hash) => {
+          //   ha$3d;           ha$3d
+          if (user.password !== hash) {
+            return done(null, false, { message: "Incorrect password." });
+          }
+          console.log("attempting admin login", user);
+          return done(null, user);
+        });
       })
+
       .catch((err) => {
         console.log(err);
       });
@@ -55,7 +64,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
   console.log("deserializing employee by id", id);
-  Employee.findByPk(id)
+  User.findByPk(id)
     .then((user) => {
       console.log("found one by PK", user);
       done(null, user);

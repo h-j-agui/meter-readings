@@ -1,11 +1,11 @@
-const { Meter, Employee } = require("../models");
+const { Meter, User } = require("../models");
 const Reading = require("../models/Reading");
 const db = require("../models/db");
 
 const readingController = {
   getReading(req, res, next) {
     // Reading.findAll(({ date, reading, notes } = req.body))
-    Reading.findAll({ include: [Meter, Employee] })
+    Reading.findAll({ include: [Meter, User] })
       .then((readings) => {
         console.log("lalal");
         console.log(readings);
@@ -39,7 +39,7 @@ const readingController = {
   },
   addReading(req, res, next) {
     // Reading.create(({ date, reading, notes } = req.body)) porque date? no sera meter_id???
-    Reading.create(({ meter_id, reading, notes, employee_id } = req.body))
+    Reading.create(({ meter_id, reading, notes, user_id } = req.body))
       .then(() => {
         res.status(201).send();
       })

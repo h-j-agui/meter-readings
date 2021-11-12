@@ -11,8 +11,7 @@ const checkAuth = (req, res, next) => {
   }
 };
 
-const adminController = require("./controllers/admin.controller");
-const employeeController = require("./controllers/employee.controller");
+const userController = require("./controllers/user.controller");
 const meterController = require("./controllers/meter.controller");
 const readingController = require("./controllers/reading.controller");
 
@@ -44,7 +43,7 @@ router.get("/checkAuth", (req, res, next) => {
   }
 });
 
-//Admin must see this to enter user & pass
+//for the .ejs views
 router.get("/admin", (req, res) => {
   res.render("admin.ejs");
 });
@@ -65,20 +64,13 @@ router.get("/logout", function (req, res) {
 //   res.render("form.ejs");
 // });
 
-//administrator login
-router.get("/admin", adminController.getAdmin);
+//adding, editing and deleting users
+router.get("/getUser", userController.getUser);
+router.post("/addUser", userController.addUser);
 
-//adding, editing and deleting administrators and employees
-router.post("/admin/addUser", employeeController.addEmployee);
-router.post("/admin/addAdmin", adminController.addAdmin);
+router.put("/admin/editUser/:id", userController.editUser);
 
-router.put("/admin/editUser/:id", employeeController.editEmployee);
-router.put("/admin/editAdmin", adminController.editAdmin);
-
-router.delete("/admin/deleteEmployee/:id", employeeController.deleteEmployee);
-router.delete("/admin/deleteAdmin/:id", adminController.deleteAdmin);
-
-router.get("/getEmployees", employeeController.getEmployee);
+router.delete("/deleteUser/:id", userController.deleteUser);
 
 //Meter
 router.get("/admin/getMeters", meterController.getMeter);
